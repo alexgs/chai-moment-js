@@ -15,4 +15,14 @@ describe( 'chai-moment', function() {
     // expect( time ).is.sameOrBefore.moment( Date.now() );
     // expect( time ).is.same.moment( time );
     // expect( time ).is.betweenMoments( time );
+
+    context( 'has a method `moment` that', function() {
+        it( 'fails if it is not supplied with a Date or Moment object', function() {
+            expect( chai.moment.moment( 'some string' ) ).to.be.false();
+        } );
+    } );
+
+    context( 'has a chainable method `before` that', function() {
+        it( 'throws an error if it is used to check a value' );
+    } );
 } );
