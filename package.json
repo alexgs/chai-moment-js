@@ -1,0 +1,29 @@
+{
+  "name": "chai-moment",
+  "version": "1.0.0-alpha1",
+  "description": "Date/time comparisons in Chai with MomentJS",
+  "main": "index.js",
+  "scripts": {
+    "test": "mocha --reporter spec"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/philgs/chai-moment.git"
+  },
+  "author": {
+    "name": "Phil Gates-Shannon",
+    "email": "phil.gs@gmail.com",
+    "url": "http://philgs.me"
+  },
+  "license": "BSD-3-Clause",
+  "dependencies": {
+    "moment": "^2.17.1"
+  },
+  "peerDependencies": {
+    "chai": ">1.10.0 <4"
+  },
+  "devDependencies": {
+    "chai": "^3.5.0",
+    "dirty-chai": "^1.2.2"
+  }
+}
