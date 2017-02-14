@@ -69,5 +69,26 @@ describe( 'chai-moment', function() {
 
     context( 'has a chainable method `before` that', function() {
         it( 'throws an error if it is used to check a value' );
+
+        it( 'returns true if target date is before the specified date', function() {
+            let m1 = moment( '2016-12-31' );
+            let m2 = moment( '2017-01-01' );
+            let m3 = undefined;
+            let m4 = moment( 1487070166773 );
+            let m5 = moment( 1487070166000 );
+
+            // Test "pass" condition
+            expect( m1 ).is.before.moment( m2 );
+            expect( m5 ).is.before.moment( m4 );
+
+            // Test "fail" condition
+            expect( function() {
+                expect( m5 ).is.not.before.moment( m4 );
+            } ).to.throw( Error, chaiMoment.messages.getComparisonError( m5, m4, 'before' ) );
+
+            // Test "specificity" parameter
+            expect( m5 ).is.same.moment( m4, 'second' );
+            expect( m5 ).is.not.before.moment( m4, 'second' );
+        } );
     } );
 } );

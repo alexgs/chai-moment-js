@@ -49,21 +49,30 @@ module.exports = function( chai, utils ) {
             errorMessages.getBadDate( timestamp )
         ).to.be.true();
 
+        // Make sure that we have Moment objects
         let obj = moment.isMoment( this._obj ) ? this._obj : moment( this._obj );
         timestamp = moment.isMoment( timestamp ) ? timestamp : moment( timestamp );
 
+        // Determine the comparator function and message based on flags
+        let comparatorFn = obj.isSame.bind( obj );        // default comparator
+        let comparatorMsg = 'the same as';
+        if ( utils.flag( this, namespace( BEFORE ) ) ) {
+            comparatorFn = obj.isBefore.bind( obj );
+            comparatorMsg = 'before';
+        }
+
         // Create a curried comparison function, to reduce redundancy
-        let compare = null;
+        let compareThisTo = null;
         if ( accuracy ) {
-            compare = _.curry( obj.isSame.bind( obj ), 2 )( _, accuracy );
+            compareThisTo = _.curry( comparatorFn, 2 )( _, accuracy );
         } else {
-            compare = _.curry( obj.isSame.bind( obj ), 1 );
+            compareThisTo = _.curry( comparatorFn, 1 );
         }
 
         // Do the comparison
         let [ positive, negative, actual, expected ] = errorMessages
-            .getComparisonError( obj, timestamp, 'the same as' );
-        this.assert( compare( timestamp ), positive, negative, expected, actual, true );
+            .getComparisonError( obj, timestamp, comparatorMsg );
+        this.assert( compareThisTo( timestamp ), positive, negative, expected, actual, true );
     } );
 };
 

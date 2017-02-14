@@ -5,7 +5,8 @@ declare global {
     export namespace Chai {
 
         interface Assertion extends LanguageChains, NumericComparison, TypeComparison {
-            moment( timestamp: any, specificity?: string );
+            before: Assertion;
+            moment( timestamp: any, specificity?: string ): Assertion;
         }
     }
 }
