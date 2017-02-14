@@ -55,7 +55,7 @@ module.exports = function( chai, utils ) {
         // Create a curried comparison function, to reduce redundancy
         let compare = null;
         if ( accuracy ) {
-            compare = _.curry( obj.isSame.bind( obj ), 1 )( _, accuracy );
+            compare = _.curry( obj.isSame.bind( obj ), 2 )( _, accuracy );
         } else {
             compare = _.curry( obj.isSame.bind( obj ), 1 );
         }
