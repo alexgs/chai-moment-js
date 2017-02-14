@@ -18,8 +18,15 @@ describe( 'chai-moment', function() {
 
     context( 'has a method `moment` that', function() {
         it( 'fails if it is not supplied with a Date or Moment object', function() {
-            expect( chai.moment.moment( 'some string' ) ).to.be.false();
+            expect( function() {
+                expect( 0 ).is.moment( 'some string' );
+            } ).to.throw( Error, 'AssertionError: expected \'some string\' to '
+                + 'be a Date or Moment, but it is \'string\'' );
         } );
+
+        it( 'performs an is-same comparison if no flag is set' );
+        it( 'accepts an optional second parameter to control the specificity of the comparison' );
+
     } );
 
     context( 'has a chainable method `before` that', function() {

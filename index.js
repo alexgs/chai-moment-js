@@ -25,9 +25,9 @@ module.exports = function( chai, utils ) {
     Assertion.addMethod( MOMENT, function( timestamp ) {
         this.assert(
             moment.isDate( timestamp ) || moment.isMoment( timestamp ),
-            'expected #{this} to be a Date or Moment, but it is #{act}',
+            'expected #{exp} to be a Date or Moment, but it is #{act}',
             'this should not be used $F119',
-            null,
+            timestamp,
             typeof timestamp
         );
     } );
