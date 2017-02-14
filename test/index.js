@@ -36,11 +36,14 @@ describe( 'chai-moment', function() {
             let m5 = moment( 1487070166000 );
 
             // Test "pass" condition
-            // expect( m1 ).is.moment( m2 );
+            expect( m1 ).is.moment( m2 );
             expect( m4 ).is.not.moment( m5 );
             // expect( m4 ).is.moment( m5, 'second' );
 
             // Test "fail" condition
+            expect( function() {
+                expect( m4 ).is.moment( m5 );
+            } ).to.throw( Error, chaiMoment.messages.getComparisonError( m4, m5, 'the same as' ) );
         } );
 
         it( 'accepts an optional second parameter to control the specificity of the comparison' );

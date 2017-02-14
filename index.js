@@ -7,6 +7,19 @@ const MOMENT = 'moment';
 let errorMessages = {
     getBadDate: function( value ) {
         return `AssertionError: expected ${value} to be a Date or Moment, but it is a ${typeof value}: expected false to be true`
+    },
+
+    getComparisonError: function( actual, expected, comparisonPhrase ) {
+        let format = 'YYYY-MM-DDTHH:mm:ss.SSSZ';
+        let act = actual.format( format );
+        let exp = expected.format( format );
+
+        return [
+            `expected ${act} to be ${comparisonPhrase} ${exp}`,
+            `expected ${act} to not be ${comparisonPhrase} ${exp}`,
+            act,
+            exp
+        ];
     }
 };
 
@@ -48,13 +61,9 @@ module.exports = function( chai, utils ) {
         }
 
         // Do the comparison
-        this.assert(
-            compare( timestamp ),
-            'expected #{exp} to be the same as {#act}',
-            'expected #{exp} to not be the same as {#act}',
-            obj,
-            timestamp
-        );
+        let [ positive, negative, actual, expected ] = errorMessages
+            .getComparisonError( obj, timestamp, 'the same as' );
+        this.assert( compare( timestamp ), positive, negative, expected, actual, true );
     } );
 };
 
