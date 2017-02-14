@@ -18,11 +18,14 @@ describe( 'chai-moment', function() {
     // expect( time ).is.betweenMoments( time );
 
     context( 'has a method `moment` that', function() {
+
         it( 'fails if it is not supplied with a Date or Moment object', function() {
-            expect( function() {
-                expect( 0 ).is.moment( 'some string' );
-            } ).to.throw( Error, 'AssertionError: expected \'some string\' to '
-                + 'be a Date or Moment, but it is \'string\'' );
+            let badDates = [ '2011-12-23', 14, { foo: '2016-11-27' } ];
+            badDates.forEach( function( value ) {
+                expect( function() {
+                    expect( 0 ).is.moment( value );
+                } ).to.throw( Error, chaiMoment.messages.getBadDate( value ) );
+            } );
         } );
 
         it( 'performs an is-same comparison if no flag is set', function() {

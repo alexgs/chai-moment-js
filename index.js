@@ -4,6 +4,12 @@ let _ = require( 'lodash' );    // TODO Only require necessary modules
 const BEFORE = 'before';
 const MOMENT = 'moment';
 
+let errorMessages = {
+    getBadDate: function( value ) {
+        return `AssertionError: expected ${value} to be a Date or Moment, but it is a ${typeof value}: expected false to be true`
+    }
+};
+
 let namespace = function( name ) {
     const ns = 'moment';
     return ns + '.' + name;
@@ -24,13 +30,11 @@ module.exports = function( chai, utils ) {
     } );
 
     Assertion.addMethod( MOMENT, function( timestamp, accuracy ) {
-        this.assert(
+        // Do this check independent of `this` so it is not affect by flags
+        new Assertion(
             moment.isDate( timestamp ) || moment.isMoment( timestamp ),
-            'expected #{exp} to be a Date or Moment, but it is #{act}',
-            'this should not be used $F119',
-            timestamp,
-            typeof timestamp
-        );
+            errorMessages.getBadDate( timestamp )
+        ).to.be.true();
 
         let obj = moment.isMoment( this._obj ) ? this._obj : moment( this._obj );
         timestamp = moment.isMoment( timestamp ) ? timestamp : moment( timestamp );
@@ -53,3 +57,5 @@ module.exports = function( chai, utils ) {
         );
     } );
 };
+
+module.exports.messages = errorMessages;
