@@ -4,15 +4,25 @@ let _ = require( 'lodash' );    // TODO Only require necessary modules
 const BEFORE = 'before';
 const MOMENT = 'moment';
 
+let ensureMoment = function( date ) {
+    return moment.isMoment( date ) ? date : moment( date )
+};
+
 let errorMessages = {
     getBadDate: function( value ) {
-        return `AssertionError: expected ${value} to be a Date or Moment, but it is a ${typeof value}: expected false to be true`
+        return `AssertionError: expected ${value} to be a Date or Moment, but `
+            + `it is a ${typeof value}: expected false to be true`
+    },
+
+    getChainableError: function( name ) {
+        return 'Chainable property "' + name + '" can only be used in a chain, '
+            + 'NOT to check a value';
     },
 
     getComparisonError: function( actual, expected, comparisonPhrase ) {
         let format = 'YYYY-MM-DDTHH:mm:ss.SSSZ';
-        let act = actual.format( format );
-        let exp = expected.format( format );
+        let act = ensureMoment( actual ).format( format );
+        let exp = ensureMoment( expected ).format( format );
 
         return [
             `expected ${act} to be ${comparisonPhrase} ${exp}`,
@@ -28,17 +38,16 @@ let namespace = function( name ) {
     return ns + '.' + name;
 };
 
-let methodErrorFactory = function( name ) {
-    return function methodError() {
-        throw new Error( 'Chainable method "' + name + '" can only be used in '
-            + 'a chain, NOT to check a value' );
+let chainableError = function( name ) {
+    return function() {
+        throw new Error( errorMessages.getChainableError( name ) );
     }
 };
 
 module.exports = function( chai, utils ) {
     let Assertion = chai.Assertion;
 
-    Assertion.addChainableMethod( BEFORE, methodErrorFactory( BEFORE ), function() {
+    Assertion.addChainableMethod( BEFORE, chainableError( BEFORE ), function() {
         utils.flag( this, namespace( BEFORE ), true );
     } );
 
@@ -47,11 +56,11 @@ module.exports = function( chai, utils ) {
         new Assertion(
             moment.isDate( timestamp ) || moment.isMoment( timestamp ),
             errorMessages.getBadDate( timestamp )
-        ).to.be.true();
+        ).is.true();
 
         // Make sure that we have Moment objects
-        let obj = moment.isMoment( this._obj ) ? this._obj : moment( this._obj );
-        timestamp = moment.isMoment( timestamp ) ? timestamp : moment( timestamp );
+        let obj = ensureMoment( this._obj );
+        timestamp = ensureMoment( timestamp );
 
         // Determine the comparator function and message based on flags
         let comparatorFn = obj.isSame.bind( obj );        // default comparator

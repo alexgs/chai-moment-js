@@ -29,10 +29,10 @@ describe( 'chai-moment', function() {
         } );
 
         it( 'performs an is-same comparison if no flag is set', function() {
-            let m1 = moment( '2016-10-13' );
+            let m1 = moment( '2016-10-13' ).toDate();
             let m2 = moment( '2016-10-13' );
             let m3 = moment( '2008-01-20' );
-            let m4 = moment( 1487070166773 );
+            let m4 = new Date( 1487070166773 );
             let m5 = moment( 1487070166000 );
 
             // Test "pass" condition
@@ -68,12 +68,18 @@ describe( 'chai-moment', function() {
     } );
 
     context( 'has a chainable method `before` that', function() {
-        it( 'throws an error if it is used to check a value' );
+
+        it( 'throws an error if it is used to check a value', function() {
+            let m1 = moment( '2016-12-31' );
+            let m2 = moment( '2017-01-01' );
+            expect( function() {
+                expect( m1 ).is.before( m2 );
+            } ).to.throw( Error, chaiMoment.messages.getChainableError( 'before' ) );
+        } );
 
         it( 'returns true if target date is before the specified date', function() {
             let m1 = moment( '2016-12-31' );
             let m2 = moment( '2017-01-01' );
-            let m3 = undefined;
             let m4 = moment( 1487070166773 );
             let m5 = moment( 1487070166000 );
 
