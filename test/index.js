@@ -67,6 +67,12 @@ describe( 'chai-moment', function() {
 
     } );
 
+    context( 'has a method `betweenMoments` that', function() {
+        it( 'takes two Date or Moment arguments' );
+        it( 'determines if the test date is between two supplied dates' );
+        it( 'throws if a flag is set' );
+    } );
+
     context( 'has a chainable method `before` that', function() {
 
         it( 'throws an error if it is used to check a value', function() {
@@ -97,4 +103,20 @@ describe( 'chai-moment', function() {
             expect( m5 ).is.not.before.moment( m4, 'second' );
         } );
     } );
+
+    context( 'has a chainable method `sameOrBefore` that', function() {
+        it( 'throws an error if it is used to check a value' );
+        it( 'returns true if the target date is the same as or before the specified date' );
+    } );
+
+    context( 'has a chainable method `after` that', function() {
+        it( 'throws an error if it is used to check a value' );
+        it( 'returns true if the target date is the after the specified date' );
+    } );
+
+    context( 'has a chainable method `sameOrAfter` that', function() {
+        it( 'throws an error if it is used to check a value' );
+        it( 'returns true if the target date is the same as or after the specified date' );
+    } );
+
 } );
