@@ -134,6 +134,7 @@ describe( 'chai-moment', function() {
             expect( function() {
                 expect( m1 ).is.before.betweenMoments( start, end );
             } ).to.throw( Error, chaiMoment.messages.noFlagsForBetween );
+            // TODO Add tests for additional flags
         } );
     } );
 
