@@ -2,6 +2,7 @@ let moment = require( 'moment' );
 let _ = require( 'lodash' );    // TODO Only require necessary modules
 
 const BEFORE = 'before';
+const BETWEEN = 'betweenMoments';
 const MOMENT = 'moment';
 
 let ensureMoment = function( date ) {
@@ -12,6 +13,20 @@ let errorMessages = {
     getBadDate: function( value ) {
         return `AssertionError: expected ${value} to be a Date or Moment, but `
             + `it is a ${typeof value}: expected false to be true`
+    },
+
+    getBetweenError: function( actual, start, end ) {
+        let format = 'YYYY-MM-DDTHH:mm:ss.SSSZ';
+        actual = ensureMoment( actual ).format( format );
+        start = ensureMoment( start ).format( format );
+        end = ensureMoment( end ).format( format );
+
+        return [
+            `expected ${actual} to be between ${start} and ${end}`,
+            `expected ${actual} to not be between ${start} and ${end}`,
+            actual,
+            start + ' <---> ' + end
+        ];
     },
 
     getChainableError: function( name ) {
@@ -30,7 +45,9 @@ let errorMessages = {
             act,
             exp
         ];
-    }
+    },
+
+    noFlagsForBetween: 'No flags can be used with the `betweenMoments` comparison.'
 };
 
 let namespace = function( name ) {
@@ -49,6 +66,44 @@ module.exports = function( chai, utils ) {
 
     Assertion.addChainableMethod( BEFORE, chainableError( BEFORE ), function() {
         utils.flag( this, namespace( BEFORE ), true );
+    } );
+
+    Assertion.addMethod( BETWEEN, function( start, end, accuracy, inclusivity ) {
+        // I said, NO FLAGS ALLOWED!
+        if ( utils.flag( this, namespace( BEFORE ) ) ) {
+            throw new Error( errorMessages.noFlagsForBetween );
+        }
+
+        // Do this check independent of `this` so it is not affect by flags
+        new Assertion(
+            moment.isDate( start ) || moment.isMoment( start ),
+            errorMessages.getBadDate( start )
+        ).is.true();
+        new Assertion(
+            moment.isDate( end ) || moment.isMoment( end ),
+            errorMessages.getBadDate( end )
+        ).is.true();
+
+        // Make sure that we have Moment objects
+        let obj = ensureMoment( this._obj );
+        start = ensureMoment( start );
+        end = ensureMoment( end );
+
+        // Use a curried function, so we don't type the args to `this.assert` every time
+        let compareThisTo = null;
+        if ( inclusivity ) {
+            compareThisTo = _.curry( obj.isBetween.bind( obj ), 4 )( _, _, accuracy, inclusivity );
+        } else if ( accuracy ) {
+            compareThisTo = _.curry( obj.isBetween.bind( obj ), 3 )( _, _, accuracy );
+        } else {
+            compareThisTo = _.curry( obj.isBetween.bind( obj ), 2 )( _, _ );
+        }
+
+        // Do the comparison
+        let [ positive, negative, actual, expected ] = errorMessages
+            .getBetweenError( obj, start, end );
+        this.assert( compareThisTo( start, end )
+            , positive, negative, expected, actual, true );
     } );
 
     Assertion.addMethod( MOMENT, function( timestamp, accuracy ) {

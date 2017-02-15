@@ -68,9 +68,73 @@ describe( 'chai-moment', function() {
     } );
 
     context( 'has a method `betweenMoments` that', function() {
-        it( 'takes two Date or Moment arguments' );
-        it( 'determines if the test date is between two supplied dates' );
-        it( 'throws if a flag is set' );
+
+        it( 'throws if not supplied with two Date or Moment arguments', function() {
+            let badDates = [ '2011-12-23', 14, { foo: '2016-11-27' } ];
+            let now = moment( Date.now() );
+
+            badDates.forEach( function( value ) {
+                expect( function() {
+                    expect( 0 ).is.betweenMoments( value, now );
+                } ).to.throw( Error, chaiMoment.messages.getBadDate( value ) );
+            } );
+
+            badDates.forEach( function( value ) {
+                expect( function() {
+                    expect( 0 ).is.betweenMoments( now, value );
+                } ).to.throw( Error, chaiMoment.messages.getBadDate( value ) );
+            } );
+        } );
+
+        it( 'determines if the test date is between two supplied dates', function() {
+            let start = moment( 1487156500000 );
+            let end   = moment( 1487156600000 );
+            let m1    = moment( 1487156550000 );
+            let m2    = moment( 1487156450000 );
+            let m3    = moment( 1487156650000 );
+
+            // Test basic *pass*
+            expect( m1 ).is.betweenMoments( start, end );
+
+            // Test basic *fail*
+            expect( function() {
+                expect( m2 ).is.betweenMoments( start, end );
+            } ).to.throw( Error, chaiMoment.messages.getBetweenError( m2, start, end ) );
+
+            expect( function() {
+                expect( m3 ).is.betweenMoments( start, end );
+            } ).to.throw( Error, chaiMoment.messages.getBetweenError( m3, start, end ) );
+
+            // Test *pass* with specificity
+            let m4   = moment( 1487156501900 );
+            let end1 = moment( 1487156502500 );
+            expect( m4 ).is.betweenMoments( start, end1, 'second' );
+
+            // Test *fail* with specificity
+            let end2 = moment( 1487156501999 );
+            expect( m4 ).is.betweenMoments( start, end2 );
+            expect( function() {
+                expect( m4 ).is.betweenMoments( start, end2, 'second' );
+            } ).to.throw( Error, chaiMoment.messages.getBetweenError( m4, start, end2 ) );
+            expect( m4 ).is.not.betweenMoments( start, end2, 'second' );
+
+            // Test *pass* with specificity and inclusivity
+            expect( m4 ).is.betweenMoments( start, end2, 'second', '[]' );
+
+            // Test *pass* with inclusivity
+            expect( start ).is.betweenMoments( start, end, null, '[]' );
+
+        } );
+
+        it( 'throws if a flag is set', function() {
+            let start = moment( 1487156500000 );
+            let m1    = moment( 1487156550000 );
+            let end   = moment( 1487156600000 );
+
+            expect( function() {
+                expect( m1 ).is.before.betweenMoments( start, end );
+            } ).to.throw( Error, chaiMoment.messages.noFlagsForBetween );
+        } );
     } );
 
     context( 'has a chainable method `before` that', function() {
