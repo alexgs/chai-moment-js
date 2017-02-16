@@ -213,7 +213,22 @@ describe( 'chai-moment', function() {
             } ).to.throw( Error, chaiMoment.messages.getChainableError( 'sameOrAfter' ) );
         } );
 
-        it( 'returns true if the target date is the same as or after the specified date' );
+        it( 'returns true if the target date is the same as or after the specified date', function() {
+            let m1 = moment( '2017-03-02 08:18:01-0500' ).toDate();
+            let m2 = moment( '2017-03-02 08:18:45-0500' ).toDate();
+
+            // Test *pass* condition
+            expect( m2 ).is.sameOrAfter.moment( m1 );
+            expect( m2 ).is.after.moment( m1 );
+            expect( m2 ).is.not.after.moment( m1, 'minute' );
+            expect( m2 ).is.sameOrAfter.moment( m1, 'minute' );
+
+            // Test *fail* condition
+            expect( function() {
+                expect( m1 ).is.sameOrAfter.moment( m2 );
+            } ).to.throw( Error, chaiMoment.messages.getComparisonError( m2, m1, 'same or before' ) );
+        } );
+
     } );
 
     context( 'has a chainable method `sameOrBefore` that', function() {

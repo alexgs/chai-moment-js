@@ -146,6 +146,10 @@ module.exports = function( chai, utils ) {
             comparatorFn = obj.isBefore.bind( obj );
             comparatorMsg = 'before';
         }
+        if ( utils.flag( this, namespace( SAME_OR_AFTER ) ) ) {
+            comparatorFn = obj.isSameOrAfter.bind( obj );
+            comparatorMsg = 'same or after';
+        }
         if ( utils.flag( this, namespace( SAME_OR_BEFORE ) ) ) {
             comparatorFn = obj.isSameOrBefore.bind( obj );
             comparatorMsg = 'same or before';
