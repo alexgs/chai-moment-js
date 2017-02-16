@@ -132,9 +132,43 @@ describe( 'chai-moment', function() {
             let end   = moment( 1487156600000 );
 
             expect( function() {
+                expect( m1 ).is.after.betweenMoments( start, end );
+            } ).to.throw( Error, chaiMoment.messages.noFlagsForBetween );
+            expect( function() {
                 expect( m1 ).is.before.betweenMoments( start, end );
             } ).to.throw( Error, chaiMoment.messages.noFlagsForBetween );
-            // TODO Add tests for additional flags
+            expect( function() {
+                expect( m1 ).is.sameOrAfter.betweenMoments( start, end );
+            } ).to.throw( Error, chaiMoment.messages.noFlagsForBetween );
+            expect( function() {
+                expect( m1 ).is.sameOrBefore.betweenMoments( start, end );
+            } ).to.throw( Error, chaiMoment.messages.noFlagsForBetween );
+        } );
+    } );
+
+    context( 'has a chainable method `after` that', function() {
+
+        it( 'throws an error if it is used to check a value', function() {
+            let m1 = moment( '2016-12-31' );
+            let m2 = moment( '2017-01-01' );
+            expect( function() {
+                expect( m2 ).is.after( m1 );
+            } ).to.throw( Error, chaiMoment.messages.getChainableError( 'after' ) );
+        } );
+
+        it( 'returns true if the target date is the after the specified date', function() {
+            let m1 = moment( '2017-03-02 08:18:01-0500' ).toDate();
+            let m2 = moment( '2017-03-02 08:18:45-0500' ).toDate();
+
+            // Test *pass* condition
+            expect( m2 ).is.after.moment( m1 );
+            expect( m2 ).is.not.after.moment( m1, 'minute' );
+            expect( m2 ).is.same.moment( m1, 'minute' );
+
+            // Test *fail* condition
+            expect( function() {
+                expect( m1 ).is.after.moment( m2 );
+            } ).to.throw( Error, chaiMoment.messages.getComparisonError( m2, m1, 'after' ) );
         } );
     } );
 
@@ -169,6 +203,19 @@ describe( 'chai-moment', function() {
         } );
     } );
 
+    context( 'has a chainable method `sameOrAfter` that', function() {
+
+        it( 'throws an error if it is used to check a value', function() {
+            let m1 = moment( '2016-12-31' );
+            let m2 = moment( '2017-01-01' );
+            expect( function() {
+                expect( m1 ).is.sameOrAfter( m1 );
+            } ).to.throw( Error, chaiMoment.messages.getChainableError( 'sameOrAfter' ) );
+        } );
+
+        it( 'returns true if the target date is the same as or after the specified date' );
+    } );
+
     context( 'has a chainable method `sameOrBefore` that', function() {
 
         it( 'throws an error if it is used to check a value', function() {
@@ -195,45 +242,6 @@ describe( 'chai-moment', function() {
             } ).to.throw( Error, chaiMoment.messages.getComparisonError( m2, m1, 'same or before' ) );
         } );
 
-    } );
-
-    context( 'has a chainable method `after` that', function() {
-
-        it( 'throws an error if it is used to check a value', function() {
-            let m1 = moment( '2016-12-31' );
-            let m2 = moment( '2017-01-01' );
-            expect( function() {
-                expect( m2 ).is.after( m1 );
-            } ).to.throw( Error, chaiMoment.messages.getChainableError( 'after' ) );
-        } );
-
-        it( 'returns true if the target date is the after the specified date', function() {
-            let m1 = moment( '2017-03-02 08:18:01-0500' ).toDate();
-            let m2 = moment( '2017-03-02 08:18:45-0500' ).toDate();
-
-            // Test *pass* condition
-            expect( m2 ).is.after.moment( m1 );
-            expect( m2 ).is.not.after.moment( m1, 'minute' );
-            expect( m2 ).is.same.moment( m1, 'minute' );
-
-            // Test *fail* condition
-            expect( function() {
-                expect( m1 ).is.after.moment( m2 );
-            } ).to.throw( Error, chaiMoment.messages.getComparisonError( m2, m1, 'after' ) );
-        } );
-    } );
-
-    context( 'has a chainable method `sameOrAfter` that', function() {
-
-        it( 'throws an error if it is used to check a value', function() {
-            let m1 = moment( '2016-12-31' );
-            let m2 = moment( '2017-01-01' );
-            expect( function() {
-                expect( m1 ).is.sameOrAfter( m1 );
-            } ).to.throw( Error, chaiMoment.messages.getChainableError( 'sameOrAfter' ) );
-        } );
-
-        it( 'returns true if the target date is the same as or after the specified date' );
     } );
 
 } );

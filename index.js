@@ -76,7 +76,7 @@ module.exports = function( chai, utils ) {
     } );
 
     Assertion.addChainableMethod( SAME_OR_AFTER, chainableError( SAME_OR_AFTER ), function() {
-
+        utils.flag( this, namespace( SAME_OR_AFTER ), true );
     } );
 
     Assertion.addChainableMethod( SAME_OR_BEFORE, chainableError( SAME_OR_BEFORE ), function() {
