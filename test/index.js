@@ -170,17 +170,41 @@ describe( 'chai-moment', function() {
     } );
 
     context( 'has a chainable method `sameOrBefore` that', function() {
-        it( 'throws an error if it is used to check a value' );
+
+        it( 'throws an error if it is used to check a value', function() {
+            let m1 = moment( '2016-12-31' );
+            let m2 = moment( '2017-01-01' );
+            expect( function() {
+                expect( m2 ).is.sameOrBefore( m2 );
+            } ).to.throw( Error, chaiMoment.messages.getChainableError( 'sameOrBefore' ) );
+        } );
+
         it( 'returns true if the target date is the same as or before the specified date' );
     } );
 
     context( 'has a chainable method `after` that', function() {
-        it( 'throws an error if it is used to check a value' );
+
+        it( 'throws an error if it is used to check a value', function() {
+            let m1 = moment( '2016-12-31' );
+            let m2 = moment( '2017-01-01' );
+            expect( function() {
+                expect( m2 ).is.after( m1 );
+            } ).to.throw( Error, chaiMoment.messages.getChainableError( 'after' ) );
+        } );
+
         it( 'returns true if the target date is the after the specified date' );
     } );
 
     context( 'has a chainable method `sameOrAfter` that', function() {
-        it( 'throws an error if it is used to check a value' );
+
+        it( 'throws an error if it is used to check a value', function() {
+            let m1 = moment( '2016-12-31' );
+            let m2 = moment( '2017-01-01' );
+            expect( function() {
+                expect( m1 ).is.sameOrAfter( m1 );
+            } ).to.throw( Error, chaiMoment.messages.getChainableError( 'sameOrAfter' ) );
+        } );
+
         it( 'returns true if the target date is the same as or after the specified date' );
     } );
 

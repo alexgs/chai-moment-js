@@ -1,9 +1,12 @@
 let moment = require( 'moment' );
 let _ = require( 'lodash' );    // TODO Only require necessary modules
 
+const AFTER = 'after';
 const BEFORE = 'before';
 const BETWEEN = 'betweenMoments';
 const MOMENT = 'moment';
+const SAME_OR_AFTER = 'sameOrAfter';
+const SAME_OR_BEFORE = 'sameOrBefore';
 
 let ensureMoment = function( date ) {
     return moment.isMoment( date ) ? date : moment( date )
@@ -64,9 +67,21 @@ let chainableError = function( name ) {
 module.exports = function( chai, utils ) {
     let Assertion = chai.Assertion;
 
+    Assertion.addChainableMethod( AFTER, chainableError( AFTER ), function(
+
+    ) {} );
+
     Assertion.addChainableMethod( BEFORE, chainableError( BEFORE ), function() {
         utils.flag( this, namespace( BEFORE ), true );
     } );
+
+    Assertion.addChainableMethod( SAME_OR_AFTER, chainableError( SAME_OR_AFTER ), function(
+
+    ) {} );
+
+    Assertion.addChainableMethod( SAME_OR_BEFORE, chainableError( SAME_OR_BEFORE ), function(
+
+    ) {} );
 
     Assertion.addMethod( BETWEEN, function( start, end, accuracy, inclusivity ) {
         // I said, NO FLAGS ALLOWED!
