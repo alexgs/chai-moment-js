@@ -207,7 +207,20 @@ describe( 'chai-moment', function() {
             } ).to.throw( Error, chaiMoment.messages.getChainableError( 'after' ) );
         } );
 
-        it( 'returns true if the target date is the after the specified date' );
+        it( 'returns true if the target date is the after the specified date', function() {
+            let m1 = moment( '2017-03-02 08:18:01-0500' ).toDate();
+            let m2 = moment( '2017-03-02 08:18:45-0500' ).toDate();
+
+            // Test *pass* condition
+            expect( m2 ).is.after.moment( m1 );
+            expect( m2 ).is.not.after.moment( m1, 'minute' );
+            expect( m2 ).is.same.moment( m1, 'minute' );
+
+            // Test *fail* condition
+            expect( function() {
+                expect( m1 ).is.after.moment( m2 );
+            } ).to.throw( Error, chaiMoment.messages.getComparisonError( m2, m1, 'after' ) );
+        } );
     } );
 
     context( 'has a chainable method `sameOrAfter` that', function() {

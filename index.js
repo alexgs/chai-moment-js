@@ -68,7 +68,7 @@ module.exports = function( chai, utils ) {
     let Assertion = chai.Assertion;
 
     Assertion.addChainableMethod( AFTER, chainableError( AFTER ), function() {
-
+        utils.flag( this, namespace( AFTER ), true );
     } );
 
     Assertion.addChainableMethod( BEFORE, chainableError( BEFORE ), function() {
@@ -138,6 +138,10 @@ module.exports = function( chai, utils ) {
         // Determine the comparator function and message based on flags
         let comparatorFn = obj.isSame.bind( obj );        // default comparator
         let comparatorMsg = 'the same as';
+        if ( utils.flag( this, namespace( AFTER ) ) ) {
+            comparatorFn = obj.isAfter.bind( obj );
+            comparatorMsg = 'after';
+        }
         if ( utils.flag( this, namespace( BEFORE ) ) ) {
             comparatorFn = obj.isBefore.bind( obj );
             comparatorMsg = 'before';
