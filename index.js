@@ -67,25 +67,28 @@ let chainableError = function( name ) {
 module.exports = function( chai, utils ) {
     let Assertion = chai.Assertion;
 
-    Assertion.addChainableMethod( AFTER, chainableError( AFTER ), function(
+    Assertion.addChainableMethod( AFTER, chainableError( AFTER ), function() {
 
-    ) {} );
+    } );
 
     Assertion.addChainableMethod( BEFORE, chainableError( BEFORE ), function() {
         utils.flag( this, namespace( BEFORE ), true );
     } );
 
-    Assertion.addChainableMethod( SAME_OR_AFTER, chainableError( SAME_OR_AFTER ), function(
+    Assertion.addChainableMethod( SAME_OR_AFTER, chainableError( SAME_OR_AFTER ), function() {
 
-    ) {} );
+    } );
 
-    Assertion.addChainableMethod( SAME_OR_BEFORE, chainableError( SAME_OR_BEFORE ), function(
-
-    ) {} );
+    Assertion.addChainableMethod( SAME_OR_BEFORE, chainableError( SAME_OR_BEFORE ), function() {
+        utils.flag( this, namespace( SAME_OR_BEFORE ), true );
+    } );
 
     Assertion.addMethod( BETWEEN, function( start, end, accuracy, inclusivity ) {
         // I said, NO FLAGS ALLOWED!
-        if ( utils.flag( this, namespace( BEFORE ) ) ) {
+        if ( utils.flag( this, namespace( AFTER ) )
+          || utils.flag( this, namespace( BEFORE ) )
+          || utils.flag( this, namespace( SAME_OR_AFTER ) )
+          || utils.flag( this, namespace( SAME_OR_BEFORE ) ) ) {
             throw new Error( errorMessages.noFlagsForBetween );
         }
 
@@ -138,6 +141,10 @@ module.exports = function( chai, utils ) {
         if ( utils.flag( this, namespace( BEFORE ) ) ) {
             comparatorFn = obj.isBefore.bind( obj );
             comparatorMsg = 'before';
+        }
+        if ( utils.flag( this, namespace( SAME_OR_BEFORE ) ) ) {
+            comparatorFn = obj.isSameOrBefore.bind( obj );
+            comparatorMsg = 'same or before';
         }
 
         // Create a curried comparison function, to reduce redundancy

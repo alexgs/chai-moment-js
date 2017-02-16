@@ -179,7 +179,22 @@ describe( 'chai-moment', function() {
             } ).to.throw( Error, chaiMoment.messages.getChainableError( 'sameOrBefore' ) );
         } );
 
-        it( 'returns true if the target date is the same as or before the specified date' );
+        it( 'returns true if the target date is the same as or before the specified date', function() {
+            let m1 = moment( '2017-03-02 08:18:01-0500' ).toDate();
+            let m2 = moment( '2017-03-02 08:18:45-0500' ).toDate();
+
+            // Test *pass* condition
+            expect( m1 ).is.sameOrBefore.moment( m2 );
+            expect( m1 ).is.before.moment( m2 );
+            expect( m1 ).is.not.before.moment( m2, 'minute' );
+            expect( m1 ).is.sameOrBefore.moment( m2, 'minute' );
+
+            // Test *fail* condition
+            expect( function() {
+                expect( m2 ).is.sameOrBefore.moment( m1 );
+            } ).to.throw( Error, chaiMoment.messages.getComparisonError( m2, m1, 'same or before' ) );
+        } );
+
     } );
 
     context( 'has a chainable method `after` that', function() {
