@@ -64,10 +64,10 @@ This is a wrapper for MomentJS's [`isBetween`][5] query function. It requires `s
 
 Finally, the `inclusivity` parameter determines whether to return true or false if the object-under-test matches the `start` or `end` argument. Basically, a parenthesis excludes an exact match (returns false) while a square bracket includes an exact match (returns true). The default is to exclude on exact matches.
 
-The following tables explains inclusivity in more concrete terms:
+The following table explains inclusivity in more concrete terms:
 
 | argument | result of exact match on `start` | result of exact match on `end` |
-| -- | -- | -- |
+| --- | --- | --- |
 | '()' | `false` | `false` |
 | '[]' | `true` | `true` |
 | '(]' | `false` | `true` |
