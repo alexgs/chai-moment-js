@@ -2,8 +2,6 @@ let chai = require( 'chai' );
 let chaiMoment = require( '../index' );
 let dirtyChai = require( 'dirty-chai' );
 let moment = require( 'moment' );
-// let path = require( 'path' );
-// let _ = require( 'lodash' );
 
 chai.use( chaiMoment );
 chai.use( dirtyChai );
