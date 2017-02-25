@@ -1,6 +1,6 @@
-# Chai Moment
+# Chai MomentJS
 
-**Chai Moment** is a plugin for the [Chai][1] assertion library that provides date/time comparisons. It is a wrapper for some of the query functions in the [MomentJS][2] date library. Use **Chai Moment** to write fluent BDD/TDD tests and get useful error messages.
+**Chai MomentJS** is a plugin for the [Chai][1] assertion library that provides date/time comparisons. It is a wrapper for some of the query functions in the [MomentJS][2] date library. Use **Chai MomentJS** to write fluent BDD/TDD tests and get useful error messages.
 
 In other words, _don't_ do this:
 
@@ -25,7 +25,7 @@ Include the plugin as normal:
 
 ```javascript
 let chai = require( 'chai' );
-let chaiMoment = require( 'chai-moment' );
+let chaiMoment = require( 'chai-moment-js' );
 
 chai.use( chaiMoment );
 let expect = chai.expect;
@@ -33,7 +33,7 @@ let expect = chai.expect;
 
 ### Test Methods
 
-**Chai Moment** provides two methods that can used to compare dates: `moment` and `betweenMoments`.
+**Chai MomentJS** provides two methods that can used to compare dates: `moment` and `betweenMoments`.
 
 #### moment( date, [accuracy] )
 
@@ -101,7 +101,7 @@ Don't combine flags. That's bad, like crossing-the-streams bad.
 
 #### before
 
-The **before** flag tells **Chai Moment** to use MomentJS's [`isBefore`][6] query function.
+The **before** flag tells **Chai MomentJS** to use MomentJS's [`isBefore`][6] query function.
 
 ```javascript
 let m0 = moment( 1487070166000 );
@@ -114,7 +114,7 @@ expect( m0 ).is.before.moment( m1, 'second' );  // => false
 
 #### after
 
-The **after** flag tells **Chai Moment** to use MomentJS's [`isAfter`][7] query function.
+The **after** flag tells **Chai MomentJS** to use MomentJS's [`isAfter`][7] query function.
 
 ```javascript
 let m0 = moment( 1487070166000 );
@@ -127,7 +127,7 @@ expect( m1 ).is.after.moment( m0, 'second' );   // => false
 
 #### sameOrBefore
 
-The **sameOrBefore** flag tells **Chai Moment** to use MomentJS's [`isSameOrBefore`][8] query function.
+The **sameOrBefore** flag tells **Chai MomentJS** to use MomentJS's [`isSameOrBefore`][8] query function.
 
 ```javascript
 let m0 = moment( 1487070166000 );
@@ -140,7 +140,7 @@ expect( m0 ).is.sameOrBefore.moment( m1, 'second' );    // => true
 
 #### sameOrAfter
 
-The **sameOrAfter** flag tells **Chai Moment** to use MomentJS's [`isSameOrAfter`][9] query function.
+The **sameOrAfter** flag tells **Chai MomentJS** to use MomentJS's [`isSameOrAfter`][9] query function.
 
 ```javascript
 let m0 = moment( 1487070166000 );
@@ -153,9 +153,13 @@ expect( m1 ).is.sameOrAfter.moment( m0, 'second' );     // => true
 
 ## Thanks
 
-Thanks to @mguterl for [chai-datetime][3], which inspired this plugin.
+Thanks to:
+
+- @mguterl for [chai-datetime][3], which inspired this plugin.
+- @fastfrwrd for [chai-moment][10], which I didn't know about until I got a name collision upon running `npm publish`!
 
 [3]: https://github.com/mguterl/chai-datetime
+[10]: https://www.npmjs.com/package/chai-moment
 
 ## License
 

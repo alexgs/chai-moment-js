@@ -1,5 +1,5 @@
 {
-  "name": "chai-moment",
+  "name": "chai-moment-js",
   "version": "1.0.0",
   "description": "Date/time comparisons in Chai with MomentJS",
   "main": "index.js",
@@ -8,7 +8,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "git://github.com/philgs/chai-moment.git"
+    "url": "git://github.com/philgs/chai-moment-js.git"
   },
   "author": {
     "name": "Phil Gates-Shannon",
