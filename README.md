@@ -51,8 +51,8 @@ You can use them like this:
 ```javascript
 let m0 = moment( 1487070166000 );
 let m1 = moment( 1487070166773 );
-expect( m1 ).is.same.moment( m0 );               // => false
-expect( m1 ).is.same.moment( m0, 'second' );     // => true
+expect( m1 ).is.same.moment( m0 );              // => false
+expect( m1 ).is.same.moment( m0, 'second' );    // => true
 ```
 
 [3]: https://momentjs.com/docs/#/query/is-same/
@@ -95,13 +95,61 @@ expect( m2 ).is.betweenMoments( m0, m2, null, '(]' );           // => true
 
 ### Flags
 
+These flags change the behavior of the `moment` comparison function. This allows you to write fluent TDD/BDD statements like `expect( fileDate ).is.before.moment( myDate )`.
+
+Don't combine flags. That's bad, like crossing-the-streams bad.
+
 #### before
+
+The **before** flag tells **Chai Moment** to use MomentJS's [`isBefore`][6] query function.
+
+```javascript
+let m0 = moment( 1487070166000 );
+let m1 = moment( 1487070166773 );
+expect( m0 ).is.before.moment( m1 );            // => true
+expect( m0 ).is.before.moment( m1, 'second' );  // => false
+```
+
+[6]: https://momentjs.com/docs/#/query/is-before/
 
 #### after
 
+The **after** flag tells **Chai Moment** to use MomentJS's [`isAfter`][7] query function.
+
+```javascript
+let m0 = moment( 1487070166000 );
+let m1 = moment( 1487070166773 );
+expect( m1 ).is.after.moment( m0 );             // => true
+expect( m1 ).is.after.moment( m0, 'second' );   // => false
+```
+
+[7]: https://momentjs.com/docs/#/query/is-after/
+
 #### sameOrBefore
 
+The **sameOrBefore** flag tells **Chai Moment** to use MomentJS's [`isSameOrBefore`][8] query function.
+
+```javascript
+let m0 = moment( 1487070166000 );
+let m1 = moment( 1487070166773 );
+expect( m0 ).is.sameOrBefore.moment( m1 );              // => true
+expect( m0 ).is.sameOrBefore.moment( m1, 'second' );    // => true
+```
+
+[8]: https://momentjs.com/docs/#/query/is-same-or-before/
+
 #### sameOrAfter
+
+The **sameOrAfter** flag tells **Chai Moment** to use MomentJS's [`isSameOrAfter`][9] query function.
+
+```javascript
+let m0 = moment( 1487070166000 );
+let m1 = moment( 1487070166773 );
+expect( m1 ).is.sameOrAfter.moment( m0 );               // => true
+expect( m1 ).is.sameOrAfter.moment( m0, 'second' );     // => true
+```
+
+[9]: https://momentjs.com/docs/#/query/is-same-or-after/
 
 ## Thanks
 
