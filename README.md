@@ -162,4 +162,4 @@ Thanks to @mguterl for [chai-datetime][3], which inspired this plugin.
 The content of this repository is licensed under the [3-Clause BSD license][4]. Please see the enclosed [license file][5] for specific terms.
 
 [4]: https://opensource.org/licenses/BSD-3-Clause
-[5]: https://github.com/philgs/chai-moment/blob/master/LICENSE.md
+[5]: https://github.com/philgs/chai-moment/blob/release/LICENSE.md

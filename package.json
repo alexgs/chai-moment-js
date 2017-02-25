@@ -1,6 +1,6 @@
 {
   "name": "chai-moment",
-  "version": "1.0.0-alpha1",
+  "version": "1.0.0",
   "description": "Date/time comparisons in Chai with MomentJS",
   "main": "index.js",
   "scripts": {
